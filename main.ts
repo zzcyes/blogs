@@ -26,12 +26,53 @@ const getDocsList = ()=>{
   })
 };
 
-const docsList = getDocsList().sort((a:DocsListProps,b:DocsListProps)=>{a.createTimeMs - b.createTimeMs});
+const docsList = getDocsList().sort((a:DocsListProps,b:DocsListProps)=> - a.createTimeMs + b.createTimeMs);
+
+console.log('docsList:',docsList);
+
+
+function BytesCount(str:string){
+  var cnt = 0;
+  for(var i=0; i<str.length; i++){
+    var c = str.charAt(i);
+    if(/^[\u0000-\u00ff]$/.test(c)){
+      cnt++;
+    }else{
+      cnt+=2;
+    }
+  }
+  return cnt;
+}
+
+const fillCatalogueName = (name:string)=>{
+  let str = "---------------------------------------------------------";
+  return str.substring(BytesCount(name))
+}
+
+function ToCDB(str:string) { 
+  var tmp = ""; 
+  for(var i=0;i<str.length;i++){ 
+      if (str.charCodeAt(i) == 12288){
+          tmp += String.fromCharCode(str.charCodeAt(i)-12256);
+          continue;
+      }
+      if(str.charCodeAt(i) > 65280 && str.charCodeAt(i) < 65375){ 
+          tmp += String.fromCharCode(str.charCodeAt(i)-65248); 
+      } 
+      else{ 
+          tmp += String.fromCharCode(str.charCodeAt(i)); 
+      } 
+  } 
+  return tmp 
+} 
+
 
 const genReadmeMd = ()=>{
   let readmeMd:string = '';
   docsList.forEach((item:DocsListProps)=>{
-    readmeMd +=`- [${item.name}](${item.fullPath})\n\r`
+
+    readmeMd +=`- [《${ToCDB(item.name)}》${fillCatalogueName(ToCDB(item.name))} uptade ${item.createTime}](${item.fullPath})\n\r`
+    // readmeMd +=`- [《${item.name}》————uptade ${item.createTime}](${item.fullPath})\n\r`
   })
   return readmeMd;
 };
