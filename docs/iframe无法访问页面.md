@@ -6,7 +6,7 @@
 
 ## 案例
 
-例如，2月15日是元宵节，为了庆祝元宵，我们需要在主站上线活动页，这个活动页刚好是一个[第三方网站](https://www.zzcyes.com/yuaunxiao/ci.html)(欧阳修的一首词)，我们需要把他嵌入到[主站](https://www.zzcyes.com/yuanxiao/)中：
+例如，2月15日是元宵节，为了庆祝元宵，我们需要在主站上线活动页，这个活动页刚好是一个[第三方网站](https://www.zzcyes.com/yuanxiao/ci.html)(欧阳修的一首词)，我们需要把他嵌入到[主站](https://www.zzcyes.com/yuanxiao/)中：
 
 ![iframe-load-url-01.png](https://gitee.com/zzcyes/repository/raw/master/images/iframe-load-url-01.png)
 
