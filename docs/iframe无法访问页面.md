@@ -49,7 +49,7 @@ MDN对它的解释如下：
 - `deny`表示该页面不允许在 frame 中展示，即便是在相同域名的页面中嵌套也不允许。
 - `sameorigin`表示该页面可以在相同域名页面的 frame 中展示。
 - `allow-from _uri_`表示该页面可以在指定来源的 frame 中展示。
-- 
+
 ## 解决方案
 
 知道`X-Frame-Options`的含义后，那么我们只需将`X-Frame-Options`的值设为`sameorigin`或`allow-from uri`即可。由于第三方页面是通过nginx部署的，因此，我们需要配置 nginx 发送 X-Frame-Options 响应头，把`sameorigin`或`allow-from uri`添加到 "http"，"server"或者 "location"的配置中(保存好配置后记得重启`nginx -s reload`)
