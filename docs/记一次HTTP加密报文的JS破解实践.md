@@ -4,10 +4,6 @@
 
 ![decipher-https-message-01.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-01.png)
 
-![decipher-https-message-02.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-02.png)
-
-![decipher-https-message-03.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-03.png)
-
 看到这么全的数据库，哪个海拉鲁老流氓不心动？
 
 我二话不说打开了开发者工具，正当我准备把网站的请求数据copy下来的时候，下面一幕让海拉鲁老流氓愣了几秒钟：
