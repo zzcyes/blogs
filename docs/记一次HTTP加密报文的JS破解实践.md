@@ -52,7 +52,7 @@ wSrc2z7sj%2BnlXfsQZXMXyF6oPlYLbVXWO%2BfZXgod4qfQvuHbcMJpjIGPE0H2pdXUTZ4TUcA93Yzi
 </noscript>
 ```
 
-看完页面结构后，很容易判断出这是`vue`框架编写的页面，并使用且使用了`webpack`打包构建工具。这时我们只要从`chunk-vendors.d9052322.js`、`app.567b1880.js`两个js文件入手就行了。
+看完页面结构后，很容易判断出这是`vue`框架编写的页面，并且使用了`webpack`打包构建工具。这时我们只要从`chunk-vendors.d9052322.js`、`app.567b1880.js`两个js文件入手就行了。
 
 先来看到`chunk-vendors.d9052322.js`这个文件的文件名，从名字上可以初步判断，这是一个第三方模块或供应商模块的文件集合，通常，我们会将所有`/node_modules`中的第三方包打包到`chunk-vendors.js`中。
 
@@ -127,10 +127,7 @@ function a(e) {
 
 在这里，我们提取几个关键字：`enc`、`AES`、`ECB`和`Pkcs7`，重点在`AEC`，这很明显用的是`AES加密算法(Advanced Encryption Standard)`。
 
-再仔细观察，这里的`decrypt`的函数传参中有`mode: Ot.a.mode.ECB,`、`Ot.a.pad.Pkcs7`，再结合`AES加密算法`，又可以确定，这里的加密算法采用的是`ECB`的工作模式
-
-
-下图是`ECB`的工作模式
+再仔细观察，这里的`decrypt`的函数传参中有`mode: Ot.a.mode.ECB,`、`Ot.a.pad.Pkcs7`，再结合`AES加密算法`，又可以确定，这里的加密算法采用的是`ECB`的工作模式，如下图
 
 ![decipher-https-message-13.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-13.png)
 
@@ -138,7 +135,8 @@ function a(e) {
 
 ### 破解密钥
 
-在聚焦到刚才打断点的`a`函数的内容
+再聚焦到刚才打断点的`a`函数的内容
+
 ```js
  function a(e) {
   var t = Ot.a.enc.Utf8.parse(st) 
@@ -227,9 +225,7 @@ var utf8 = CryptoJS.enc.Utf8.stringify(words);
 st = Object(ft["MD5"])("by ilil").toString().substring(0, 16)
 ```
 
-我们从这段函数表达式中提取关键的信息`Object(ft["MD5"])("by ilil")`，可以推测出这里是用了`MD5`对`by ilil`进行了加密，然后把得到的值字符串化后截取了0~16位
-
-此时我们如果继续在`app.567b1880.js`文件中搜索`ft`函数会得到如下内容
+我们从这段函数表达式中提取关键的信息`Object(ft["MD5"])("by ilil")`，可以推测出这里是用了`MD5`对`by ilil`进行了加密，然后把得到的值字符串化后截取了0~16位。此时我们如果继续在`app.567b1880.js`文件中搜索`ft`函数会得到如下内容
 
 ```js
 ft = c("3452")
@@ -241,8 +237,8 @@ ft = c("3452")
 
 我们可以看到`3452`标识的匿名函数中的内容是被混淆过的，此时我们继续追溯下去会难查到源头。
 
-既然是通过`MD5`去对密钥做了一层加密，那么，我们可以可以用`CryptoJS`自带的`MD5`函数去验证
-，最后得到`st`即`passphraseText`密钥为`a1b15f44ab22f260`，
+既然是通过`MD5`去对密钥做了一层加密，那么，我们可以可以用`CryptoJS`自带的`MD5`函数去验证，最后得到`st`即`passphraseText`密钥为`a1b15f44ab22f260`
+
 ```js
 Object(CryptoJS.MD5("by ilil")).toString().substring(0, 16); // a1b15f44ab22f260
 ```
