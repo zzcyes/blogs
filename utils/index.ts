@@ -68,13 +68,28 @@ interface IFDocsItem {
 const genReadmeMd = (docsList:IFDocsItem[])=>{
   let readmeMd = '';
   docsList.forEach((item:IFDocsItem)=> {
-      readmeMd += "- [\u300A" + ToDBC(item.name) + "\u300B" + fillCatalogueName(ToDBC(item.name)) + " uptade " + item.createTime + "](" + item.fullPath + ")\n\r";
+    // console.log(item.fullPath.split("markdown"));
+    const [basePath,secondPath] = item.fullPath.split("markdown");
+    console.log('secondPath',secondPath);
       // readmeMd +=`- [《${item.name}》————uptade ${item.createTime}](${item.fullPath})\n\r`
+      readmeMd += "- [\u300A" + ToDBC(item.name) + "\u300B" + fillCatalogueName(ToDBC(item.name)) + " uptade " + item.createTime + "](./" + secondPath.slice(1) + ")\n\r";
   });
   return readmeMd;
 };
 
+const removeSpecifiedDirs = (checkDirs:string[], suffix:string = '.js') =>{
+  checkDirs.forEach(dir => {
+      const filesList = fs.readdirSync(dir);
+      filesList.forEach((file:string) => {
+          var strRegex = `(.${suffix})$`; //用于验证图片扩展名的正则表达式
+          var re = new RegExp(strRegex);
+          if (re.test(file)) {
+              fs.unlinkSync(path.resolve(__dirname, dir, file));
+          }
+      })
+  })
 
+}
 
 
 export  {
@@ -84,5 +99,6 @@ export  {
   formatDate,
   getDocsList,
   IFDocsItem,
-  genReadmeMd
+  genReadmeMd,
+  removeSpecifiedDirs
 }
