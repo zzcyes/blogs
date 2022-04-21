@@ -4,7 +4,7 @@
 在本地跑React项目时，调用的接口往往是跨域的，一般常用的是`webpack-dev-server`提供的`prxoy`代理功能。然而在每次切换代理环境后，都需要重新跑项目，对于开发人员来说太麻烦了。如果能够在切换代理环境后，不用重跑项目，岂不是提升了开发体验和减少了项目编译的时间呢？
 
 ● webpack.devServer.config.js
-```json
+```javascript
 
 'use strict';
 const fs = require('fs');
@@ -366,7 +366,7 @@ router: async function() {
 
 - webpack.devServer.config.js
 
-```json
+```javascript
 'use strict';
 const fs = require('fs');
 // ...
