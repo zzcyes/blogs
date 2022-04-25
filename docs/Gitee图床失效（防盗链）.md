@@ -70,8 +70,6 @@ A网站岂能容忍，为了防止他人未经授权使用图像，对图像资�
 
 而识别访问来源，可通过请求头中的`Referer`标头字段去区分。当然只要是能够识别访问来源是否为本站或白名单站点的方法，都能够用来实现防盗链。更多实现方法可参考这篇文章[《如何选择适合自己网站的防盗链》 - 掘金](https://juejin.cn/post/6875562790543687693)
 
-### Nginx 配置防盗链
-
 Nginx常用来做静态资源的代理转发，我们可以用Nginx提供的一些配置参数和规则去限制实现防盗链的功能。
 
 ![gitee-figure-bed-07.png](https://gitee.com/zzcyes/repository/raw/master/images/gitee-figure-bed-07.png)
@@ -91,7 +89,7 @@ if ($invalid_referer) {
 }
 ```
 
-#### 只放行指定站点
+### 只放行指定站点
 
 如下是一个配置案例,只放行`referer`标头为`*.zzcyes.com`的站点。更多配置请[查阅文档](http://nginx.org/en/docs/http/ngx_http_referer_module.html)
 
@@ -118,7 +116,7 @@ location /images/ {
 
 ![gitee-figure-bed-08.gif](https://gitee.com/zzcyes/repository/raw/master/images/gitee-figure-bed-08.gif)
 
-#### 放行空referer和指定站点
+### 放行空referer和指定站点
 
 放行空`referer`标头和`referer`标头为`*.zzcyes.com`的站点。
 
@@ -140,9 +138,8 @@ location /images/ {
 
 ![gitee-figure-bed-13.png](https://gitee.com/zzcyes/repository/raw/master/images/gitee-figure-bed-13.png)
 
-## 防盗链的破解方法
 
-### 只放行指定站点
+## 防盗链的破解方法: 只放行指定站点
 
 在前边的案例中，nginx只配置了**只放行指定站点**这一规则，那么只有在指定站点才能够访问到图像资源。
 
@@ -179,11 +176,10 @@ location /images/ {
 
 ![gitee-figure-bed-13.png](https://gitee.com/zzcyes/repository/raw/master/images/gitee-figure-bed-13.png)
 
-#### 伪造referer
 
 对于只放行指定站点这一规则，我们可以从伪造referer标头入手。因为服务端只是验证referer标头是否是指定站点，那么只要我们伪造请求的referer为相对应的站点，便可破解防盗链了。
 
-##### 谷歌浏览器插件
+### 谷歌浏览器插件
 
 谷歌应用商店有很多这类的插件，这里推荐**Referer Control**。
 
@@ -197,7 +193,7 @@ location /images/ {
 
 ![gitee-figure-bed-21.png](https://gitee.com/zzcyes/repository/raw/master/images/gitee-figure-bed-21.png)
 
-##### 终端访问下载
+### 终端访问下载
 
 在终端输入curl语句，并设置referer标头为`http://www.zzcyes.com`，这样我们可以正常下载图像资源。
 
@@ -209,8 +205,7 @@ curl -o icon-kobe.png -H "referer":"http://www.zzcyes.com"  http://www.zzcyes.co
 
 ![gitee-figure-bed-23.png](https://gitee.com/zzcyes/repository/raw/master/images/gitee-figure-bed-23.png)
 
-
-### 放行空referer和指定站点
+## 防盗链的破解方法: 放行空referer和指定站点
 
 在nginx配置**放行空referer和指定站点**的这一规则，是实现防盗链的常用方式。
 
@@ -230,14 +225,14 @@ location /images/ {
 }
 ```
 
-#### 浏览器直接输入url
+### 浏览器直接输入url
 
 浏览器输入图片地址后回车，是能正常显示图片的。因为在浏览器直接输入地址发起请求，请求头不携带referer标头，这样一来就能通过服务器的校验了。
 
 ![gitee-figure-bed-14.png](https://gitee.com/zzcyes/repository/raw/master/images/gitee-figure-bed-14.png)
 
 
-#### 终端访问下载
+### 终端访问下载
 
 同样，在终端输入curl语句，这时请求头也是不携带referer标头的，我们可以正常下载图像资源。
 
@@ -247,7 +242,7 @@ curl -o icon-kobe.png http://www.zzcyes.com/images/icon/icon-kobe.png
 
 ![gitee-figure-bed-15.png](https://gitee.com/zzcyes/repository/raw/master/images/gitee-figure-bed-15.png)
 
-#### HTTP升级为HTTPS（仅限请求页面为非安全协议）
+### HTTP升级为HTTPS（仅限请求页面为非安全协议）
 
 为了方便对比，这里用vscode的liveServer插件起了一个HTTP服务和一个HTTPS服务。
 
