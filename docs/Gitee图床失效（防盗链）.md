@@ -66,7 +66,7 @@ A网站岂能容忍，为了防止他人未经授权使用图像，对图像资�
 
 ## 防盗链的实现方法
 
-经过刚才的分析，不难得出防盗链的实现原理。服务端判断访问来源是否来自本站或白名单站点，当访问来源不符合这些条件时，服务器便可拒绝其操作。
+经过刚才的分析，不难得出防盗链的实现原理：服务端判断访问来源是否来自本站或白名单站点，当访问来源不符合这些条件时，服务器便可拒绝其操作。
 
 而识别访问来源，可通过请求头中的`Referer`标头字段去区分。当然只要是能够识别访问来源是否为本站或白名单站点的方法，都能够用来实现防盗链。更多实现方法可参考这篇文章[《如何选择适合自己网站的防盗链》 - 掘金](https://juejin.cn/post/6875562790543687693)
 
@@ -144,9 +144,17 @@ location /images/ {
 
 ### 只放行指定站点
 
-在前边的案例中，nginx只配置了**只放行指定站点·**这一规则，那么只有在指定站点才能够访问到图像资源。
+在前边的案例中，nginx只配置了**只放行指定站点**这一规则，那么只有在指定站点才能够访问到图像资源。
 
-但在一般情况下，网站是不会这样去限制访问来源必须是本站或者指点站点的。试想一下以下场景：用户在浏览器中输入网站的图像资源，用户本身期望是浏览器能够正常显示图像资源的。如果服务端只放行指定站点，对于那些非指定站点和空referer标头，都会被服务段拒绝访问或者重定向。那么用户期望看到的图像资源便无法正常展示了，这样不合常理。
+但在一般情况下，网站是不会这样去限制访问来源必须是本站或者指点站点的。
+
+试想有这么一个场景：用户在浏览器的搜索栏中输入网站的图像资源。
+
+- 期望：浏览器能够正常显示图像资源的。
+
+- 结果：无法正常展示（服务端只放行指定站点，对于那些非指定站点和空referer标头，都会被服务段拒绝访问或者重定向。）
+
+这样用户期望看到的图像资源无法正常展示，这样不合常理。
 
 接下来的破解均以访问科比24号紫金球衣`http://www.zzcyes.com/images/icon/icon-kobe.png`的图片为例，nginx配置如下：
 
@@ -160,13 +168,14 @@ location /images/ {
 }
 ```
 
-用vscode起了一个本地服务http://127.0.0.1:5500/index.html，去加载球衣图片资源。
+用vscode起了一个本地服务`http://127.0.0.1:5500/index.html`，去加载球衣图片资源。
 
 ```html
+<!-- index.html -->
 <img src="http://www.zzcyes.com/images/icon/icon-kobe.png" alt="this is kobe icon"/>  
 ```
 
-因为nginx配置的规则只允许放行*.zzcyes.com，本地起的服务加载图像资源失败，会重定向到狗子的照片。
+因为nginx配置的规则只允许放行`*.zzcyes.com`，本地起的服务加载图像资源失败，会重定向到狗子的照片。
 
 ![gitee-figure-bed-13.png](https://gitee.com/zzcyes/repository/raw/master/images/gitee-figure-bed-13.png)
 
@@ -195,6 +204,11 @@ location /images/ {
 ```shell 
 curl -o icon-kobe.png -H "referer":"http://www.zzcyes.com"  http://www.zzcyes.com/images/icon/icon-kobe.png
 ```
+
+![gitee-figure-bed-22.png](https://gitee.com/zzcyes/repository/raw/master/images/gitee-figure-bed-22.png)
+
+![gitee-figure-bed-23.png](https://gitee.com/zzcyes/repository/raw/master/images/gitee-figure-bed-23.png)
+
 
 ### 放行空referer和指定站点
 
@@ -235,7 +249,7 @@ curl -o icon-kobe.png http://www.zzcyes.com/images/icon/icon-kobe.png
 
 #### HTTP升级为HTTPS（仅限请求页面为非安全协议）
 
-为了方便对比，这里用vscode的liveServer插件起了一个http服务和一个https服务。
+为了方便对比，这里用vscode的liveServer插件起了一个HTTP服务和一个HTTPS服务。
 
 ```html
 <!-- index.html -->
