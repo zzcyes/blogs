@@ -8,11 +8,11 @@
 
 但是，在经过Nginx代理转发后，虽然`status code` 为200，但是请求报错 `CORS errors`，并且没有没有返回响应结果。
 
-![cors-multiple-values-02.png](https://gitee.com/zzcyes/repository/raw/master/images/cors-multiple-values-02.png)
+![cors-multiple-values-02.png](https://www.zzcyes.com/images/cors-multiple-values-02.png)
 
 打开浏览器控制台发现报了以下错误：
 
-![cors-multiple-values-01.png](https://gitee.com/zzcyes/repository/raw/master/images/cors-multiple-values-01.png)
+![cors-multiple-values-01.png](https://www.zzcyes.com/images/cors-multiple-values-01.png)
 
 ```
 Access to fetch at 'http://47.115.13.227:3004/cors/test' from origin 'http://127.0.0.1:5500' has been blocked by CORS policy: The 'Access-Control-Allow-Origin' header contains multiple values '*, *', but only one is allowed. Have the server send the header with a valid value, or, if an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
@@ -22,7 +22,7 @@ Access to fetch at 'http://47.115.13.227:3004/cors/test' from origin 'http://127
 
 接着观察了下响应头，果然有两个 `Access-Control-Allow-Origin` 标头。
 
-![cors-multiple-values-04.png](https://gitee.com/zzcyes/repository/raw/master/images/cors-multiple-values-04.png)
+![cors-multiple-values-04.png](https://www.zzcyes.com/images/cors-multiple-values-04.png)
 
 
 ## 解决方法
@@ -114,7 +114,7 @@ server {
 
 去除Nginx中配置的 `Access-Control-Allow-Origin` 标头后，成功接收到了服务端的响应结果，并且响应头只保留了一个来自 Node.js 服务端配置的 `Access-Control-Allow-Origin` 标头。
 
-![cors-multiple-values-03.png](https://gitee.com/zzcyes/repository/raw/master/images/cors-multiple-values-03.png)
+![cors-multiple-values-03.png](https://www.zzcyes.com/images/cors-multiple-values-03.png)
 
 ### 去除服务端配置的"Access-Control-Allow-Origin"
 
@@ -136,7 +136,7 @@ corsServer.listen('8004', function() {
 
 去除 Node.js 服务中配置的 `Access-Control-Allow-Origin` 标头后，成功接收到了服务端的响应结果，并且响应头只保留了一个来自 Nginx 配置的 `Access-Control-Allow-Origin`标头。
 
-![cors-multiple-values-03.png](https://gitee.com/zzcyes/repository/raw/master/images/cors-multiple-values-03.png)
+![cors-multiple-values-03.png](https://www.zzcyes.com/images/cors-multiple-values-03.png)
 
 ## 总结
 

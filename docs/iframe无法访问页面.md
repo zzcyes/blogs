@@ -8,11 +8,11 @@
 
 例如，2月15日是元宵节，为了庆祝元宵，我们需要在主站上线活动页，这个活动页刚好是一个[第三方网站](https://www.zzcyes.com/yuanxiao/ci.html)(欧阳修的一首词)，我们需要把他嵌入到[主站](https://www.zzcyes.com/yuanxiao/)中：
 
-![iframe-load-url-01.png](https://gitee.com/zzcyes/repository/raw/master/images/iframe-load-url-01.png)
+![iframe-load-url-01.png](https://www.zzcyes.com/images/iframe-load-url-01.png)
 
 主站**设计图**如下:
 
-![iframe-load-url-02.png](https://gitee.com/zzcyes/repository/raw/master/images/iframe-load-url-02.png)
+![iframe-load-url-02.png](https://www.zzcyes.com/images/iframe-load-url-02.png)
 
 主站**实现代码**如下：
 
@@ -29,12 +29,12 @@
 ## 问题
 把代码提交之后，打开我们的主站，效果却变成了这样：
 
-![iframe-load-url-03.png](https://gitee.com/zzcyes/repository/raw/master/images/iframe-load-url-03.png)
+![iframe-load-url-03.png](https://www.zzcyes.com/images/iframe-load-url-03.png)
 
 查看控制台，有以下**报错信息**：​
 _Refused to display '[https://www.zzcyes.com/'](https://www.zzcyes.com/') in a frame because it set 'X-Frame-Options' to 'deny'._
 
-![iframe-load-url-04.png](https://gitee.com/zzcyes/repository/raw/master/images/iframe-load-url-04.png)
+![iframe-load-url-04.png](https://www.zzcyes.com/images/iframe-load-url-04.png)
 
 控制台说在ifame嵌入的第三方网站拒绝了我们的访问，因为它把`X-Frame-Options`设置成了`deny`。
 
@@ -94,11 +94,11 @@ MDN对它的解释如下：
 注意：当按以上配置允许iframe展示的网站时，控制台打印如下错误：
 _Invalid 'X-Frame-Options' header encountered when loading '[https://www.zzcyes.com/':](https://www.zzcyes.com/':) 'ALLOW-FROM [https://www.zzcyes.com'](https://www.zzcyes.com')is not a recognized directive. The header will be ignored._
 
-![iframe-load-url-05.png](https://gitee.com/zzcyes/repository/raw/master/images/iframe-load-url-05.png)
+![iframe-load-url-05.png](https://www.zzcyes.com/images/iframe-load-url-05.png)
 
 控制台打印说我设置的标头X-Frame-Options不生效，我反复检查了下nginx的配置，确实没有问题。于是想了下会不会浏览器版本的，是不是不支持`allow-from`这个语法，果然，在mdn浏览器兼容性的表上查到了，果然不支持（chrome浏览器）`allow-from`这个语法，那么这种方案（在chrome浏览器上）就行不通了
 
-![iframe-load-url-06.png](https://gitee.com/zzcyes/repository/raw/master/images/iframe-load-url-06.png)
+![iframe-load-url-06.png](https://www.zzcyes.com/images/iframe-load-url-06.png)
 
 ### Content-Security-Policy
 

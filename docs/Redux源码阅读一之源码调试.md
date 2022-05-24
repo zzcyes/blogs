@@ -43,7 +43,7 @@ yarn eject
 # npm run eject
 ```
 
-![redux-debugger-image-20220523143711304](https://www.zzcyes.com/images/redux-debugger-20220523143711304.png)
+![redux-debugger-image-20220523143711304](../images/redux-debugger-20220523143711304.png)
 
 ### 安装 Redux
 
