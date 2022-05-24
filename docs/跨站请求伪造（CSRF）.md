@@ -11,7 +11,7 @@
 攻击者诱导受害者进入第三方网站，在第三方网站中，向被攻击网站发送跨站请求。利用受害者在被攻击网站已经获取的注册凭证，绕过后台的用户验证，达到冒充用户对被攻击的网站执行某项操作的目的。
 
 [图源](https://xz.aliyun.com/t/8186)
-![img](https://www.zzcyes.com/images/csrf-202109291635065.png)
+![img](../images/csrf-202109291635065.png)
 
 ## 攻击危害
 
@@ -35,7 +35,7 @@ GET类型的CSRF利用非常简单，只需要一个HTTP请求，一般会这样
 
 [完整示例-CSRF攻击-github](https://github.com/zzcyes/daily-demo/blob/main/network/csrf/login.html)
 
-![img](https://www.zzcyes.com/images/csrf-202109291635197.gif)
+![img](../images/csrf-202109291635197.gif)
 
 ### POST类型的CSRF
 
@@ -70,7 +70,7 @@ POST类型的攻击通常比GET要求更加严格一点，但仍并不复杂。�
 
 [完整示例-CSRF攻击-github](https://github.com/zzcyes/daily-demo/blob/main/network/csrf/login.html)
 
-![img](https://www.zzcyes.com/images/csrf-202109291635358.gif)
+![img](../images/csrf-202109291635358.gif)
 
 ## CSRF的特点
 

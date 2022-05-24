@@ -4,19 +4,19 @@
 
 今天打开博客园发现，平时记录的一些文章里边放的图标失效了，如下图：
 
-![gitee-figure-bed-04.png](https://www.zzcyes.com/images/gitee-figure-bed-04.png)
+![gitee-figure-bed-04.png](../images/gitee-figure-bed-04.png)
 
 之前一直用`gitee`当图床，免费又稳定！今天咋回事？
 
-但是在浏览器打开挂掉的[图片](https://www.zzcyes.com/images/icon-kobe.png)，浏览器又是正常展示，这就很神奇了！
+但是在浏览器打开挂掉的[图片](../images/icon-kobe.png)，浏览器又是正常展示，这就很神奇了！
 
-![gitee-figure-bed-01.png](https://www.zzcyes.com/images/gitee-figure-bed-01.png)
+![gitee-figure-bed-01.png](../images/gitee-figure-bed-01.png)
 
 ### 302 Moved Temporarily
 
 回到博客园，按下F12键打开开发者工具，看了下这个失效的图标资源的请求。`status code`是 `302 Moved Temporarily`，说明请求重定向了。`Response Headers`中`Location`为`https://assets.gitee.com/favicon.ico`，这是重定向后的链接。
 
-![gitee-figure-bed-02.png](https://www.zzcyes.com/images/gitee-figure-bed-02.png)
+![gitee-figure-bed-02.png](../images/gitee-figure-bed-02.png)
 
 ### 403
 
@@ -24,13 +24,13 @@
 
 > 403错误是一种在网站访问过程中，常见的错误提示，表示资源不可用。服务器理解客户的请求，但拒绝处理它，通常由于服务器上文件或目录的权限设置导致的WEB访问错误。
 
-![gitee-figure-bed-03.png](https://www.zzcyes.com/images/gitee-figure-bed-03.png)
+![gitee-figure-bed-03.png](../images/gitee-figure-bed-03.png)
 
 ### Referer
 
 接着看到`Request Headers`，其中`referer`标头引起了我的注意，`referer`的值为`http://www.cnblogs.com/`。
 
-![gitee-figure-bed-05.png](https://www.zzcyes.com/images/gitee-figure-bed-05.png)
+![gitee-figure-bed-05.png](../images/gitee-figure-bed-05.png)
 
 MDN对`Referer`的解释如下：
 
@@ -44,7 +44,7 @@ MDN对`Referer`的解释如下：
 
 这不是就是常见的图像防盗链处理吗？那什么是防盗链呢？
 
-![gitee-figure-bed-06.png](https://www.zzcyes.com/images/gitee-figure-bed-06.png)
+![gitee-figure-bed-06.png](../images/gitee-figure-bed-06.png)
 
 咳咳开个玩笑！一句话总结防盗链就是：**防止未经授权使用图像**。
 
@@ -72,7 +72,7 @@ A网站岂能容忍，为了防止他人未经授权使用图像，对图像资�
 
 Nginx常用来做静态资源的代理转发，我们可以用Nginx提供的一些配置参数和规则去限制实现防盗链的功能。
 
-![gitee-figure-bed-07.png](https://www.zzcyes.com/images/gitee-figure-bed-07.png)
+![gitee-figure-bed-07.png](../images/gitee-figure-bed-07.png)
 
 
 查阅文档之后，了解到`ngx_http_referer_module`这个模块可以让我们实现防盗链的功能。
@@ -105,16 +105,16 @@ location /images/ {
 
 假设我们需要访问的图片为24号紫金球衣`http://www.zzcyes.com/images/icon/icon-kobe.png`
 
-![gitee-figure-bed-10.png](https://www.zzcyes.com/images/gitee-figure-bed-10.png)
+![gitee-figure-bed-10.png](../images/gitee-figure-bed-10.png)
 
 如果访问源不是`*.zzcyes.com`，则重定向到狗子的照片
 
-![gitee-figure-bed-11.jpg](https://www.zzcyes.com/images/gitee-figure-bed-11.jpg)
+![gitee-figure-bed-11.jpg](../images/gitee-figure-bed-11.jpg)
 
 
 接下进行验证，在浏览器输入图片链接，可以看到，浏览器直接重定向到了狗子的照片。
 
-![gitee-figure-bed-08.gif](https://www.zzcyes.com/images/gitee-figure-bed-08.gif)
+![gitee-figure-bed-08.gif](../images/gitee-figure-bed-08.gif)
 
 ### 放行空referer和指定站点
 
@@ -132,11 +132,11 @@ location /images/ {
 
 在浏览器中输入图片链接直接访问，是能正常显示图片的，因为浏览器不会在请求头添加`referer`标头。
 
-![gitee-figure-bed-12.png](https://www.zzcyes.com/images/gitee-figure-bed-12.png)
+![gitee-figure-bed-12.png](../images/gitee-figure-bed-12.png)
 
 而在第三方站点访问图片时，`referer`标头的值为第三站点，根据nginx配置的规则，会重定向到狗子的照片。
 
-![gitee-figure-bed-13.png](https://www.zzcyes.com/images/gitee-figure-bed-13.png)
+![gitee-figure-bed-13.png](../images/gitee-figure-bed-13.png)
 
 
 ## 防盗链的破解方法: 只放行指定站点
@@ -174,7 +174,7 @@ location /images/ {
 
 因为nginx配置的规则只允许放行`*.zzcyes.com`，本地起的服务加载图像资源失败，会重定向到狗子的照片。
 
-![gitee-figure-bed-13.png](https://www.zzcyes.com/images/gitee-figure-bed-13.png)
+![gitee-figure-bed-13.png](../images/gitee-figure-bed-13.png)
 
 
 对于只放行指定站点这一规则，我们可以从伪造referer标头入手。因为服务端只是验证referer标头是否是指定站点，那么只要我们伪造请求的referer为相对应的站点，便可破解防盗链了。
@@ -183,15 +183,15 @@ location /images/ {
 
 谷歌应用商店有很多这类的插件，这里推荐**Referer Control**。
 
-![gitee-figure-bed-19.png](https://www.zzcyes.com/images/gitee-figure-bed-19.png)
+![gitee-figure-bed-19.png](../images/gitee-figure-bed-19.png)
 
 我用这个插件配置了一个自定义规则，用`http://www.zzcyes.com`作为访问来源的地址，即请求头的referer标头的值为`http://www.zzcyes.com`。
 
-![gitee-figure-bed-20.png](https://www.zzcyes.com/images/gitee-figure-bed-20.png)
+![gitee-figure-bed-20.png](../images/gitee-figure-bed-20.png)
 
 接着，刷新本地服务启动的`http://127.0.0.1:5500/index.html`页面，可以看到，球衣图片加载出来了，并且Referer标头被篡改成了`http://www.zzcyes.com`。
 
-![gitee-figure-bed-21.png](https://www.zzcyes.com/images/gitee-figure-bed-21.png)
+![gitee-figure-bed-21.png](../images/gitee-figure-bed-21.png)
 
 ### 终端访问下载
 
@@ -201,9 +201,9 @@ location /images/ {
 curl -o icon-kobe.png -H "referer":"http://www.zzcyes.com"  http://www.zzcyes.com/images/icon/icon-kobe.png
 ```
 
-![gitee-figure-bed-22.png](https://www.zzcyes.com/images/gitee-figure-bed-22.png)
+![gitee-figure-bed-22.png](../images/gitee-figure-bed-22.png)
 
-![gitee-figure-bed-23.png](https://www.zzcyes.com/images/gitee-figure-bed-23.png)
+![gitee-figure-bed-23.png](../images/gitee-figure-bed-23.png)
 
 ## 防盗链的破解方法: 放行空referer和指定站点
 
@@ -229,7 +229,7 @@ location /images/ {
 
 浏览器输入图片地址后回车，是能正常显示图片的。因为在浏览器直接输入地址发起请求，请求头不携带referer标头，这样一来就能通过服务器的校验了。
 
-![gitee-figure-bed-14.png](https://www.zzcyes.com/images/gitee-figure-bed-14.png)
+![gitee-figure-bed-14.png](../images/gitee-figure-bed-14.png)
 
 
 ### 终端访问下载
@@ -240,7 +240,7 @@ location /images/ {
 curl -o icon-kobe.png http://www.zzcyes.com/images/icon/icon-kobe.png
 ```
 
-![gitee-figure-bed-15.png](https://www.zzcyes.com/images/gitee-figure-bed-15.png)
+![gitee-figure-bed-15.png](../images/gitee-figure-bed-15.png)
 
 ### HTTP升级为HTTPS（仅限请求页面为非安全协议）
 
@@ -255,13 +255,13 @@ curl -o icon-kobe.png http://www.zzcyes.com/images/icon/icon-kobe.png
 
 可以看到，请求的图像资源携带的referer标头为`http://127.0.0.1:5500/`，与nginx配置的`*.zzcyes.com`不匹配，因此重定向到狗子的图片了。
 
-![gitee-figure-bed-16.png](https://www.zzcyes.com/images/gitee-figure-bed-16.png)
+![gitee-figure-bed-16.png](../images/gitee-figure-bed-16.png)
   
 - HTTPS
 
 可以看到，请求的图像资源携带的referer标头为`https://127.0.0.1:5500/`，与nginx配置的`*.zzcyes.com`不匹配，但是图片资源却成功返回了。
 
-![gitee-figure-bed-17.png](https://www.zzcyes.com/images/gitee-figure-bed-17.png)
+![gitee-figure-bed-17.png](../images/gitee-figure-bed-17.png)
 
 带着这个疑惑查了下MDN的资料:
 
@@ -275,7 +275,7 @@ curl -o icon-kobe.png http://www.zzcyes.com/images/icon/icon-kobe.png
 
 那么，当来源页面和请求页面均是HTTPS协议时，会有什么效果呢？根据MDN文档描述，Referer标头是能够正常发送的，于是我去HTTPS服务的nginx配置了下相同的规则，允许**放行空referer和referer标头为*.zzcyes.com站点**，然后再用HTTPS协议的页面去请求图像资源！
 
-![gitee-figure-bed-18.png](https://www.zzcyes.com/images/gitee-figure-bed-18.png)
+![gitee-figure-bed-18.png](../images/gitee-figure-bed-18.png)
 
 可以看到，这里图片资源已经不能正常访问了，重定向到狗子的照片了。也就说Referer标头是能够被服务端接受到的，并且nginx配置的Referer校验规则生效了，拒绝放行非*.zzcyes.com站点的请求，并重定向到狗子的照片了。
 

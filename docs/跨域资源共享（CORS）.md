@@ -10,7 +10,7 @@ CORS需要浏览器和服务器同时支持
 - 只要服务器实现了CORS接口，便可以实现跨源通信
 
 目前，所有浏览器都支持该功能，IE浏览器不能低于IE10。
-![cors-202109291625064.png](https://www.zzcyes.com/images/cors-202109291625064.png)
+![cors-202109291625064.png](../images/cors-202109291625064.png)
 ## 两种请求
 浏览器将CORS请求分成两类：简单请求（simple request）和非简单请求（not-so-simple request）。
 ### 简单请求
@@ -73,11 +73,11 @@ http.createServer((request,response)=>{
 
 - 调用`http://127.0.0.1:3000/simple`（非跨域请求）
 
-![cors-202109291625979.png](https://www.zzcyes.com/images/cors-202109291625979.png)
+![cors-202109291625979.png](../images/cors-202109291625979.png)
 
 - 调用`http://127.0.0.1:4000/simple`（简单请求）
 
-![cors-202109291625180.png](https://www.zzcyes.com/images/cors-202109291625180.png)
+![cors-202109291625180.png](../images/cors-202109291625180.png)
 对比两张图可以发现，简单请求的响应头部多了`Origin:http//127.0.0.1:3000`
 ### 非简单请求
 #### 条件
@@ -129,16 +129,16 @@ http.createServer((request,response)=>{
 
 - 调用`http://127.0.0.1:3000/no-simple`（非跨域请求）
 
-![cors-202109291625250.png](https://www.zzcyes.com/images/cors-202109291625250.png)
+![cors-202109291625250.png](../images/cors-202109291625250.png)
 
 - 调用`http://127.0.0.1:4000/no-simple`（非简单请求）
 
 预检请求
-![cors-202109291625409.png](https://www.zzcyes.com/images/cors-202109291625409.png)
+![cors-202109291625409.png](../images/cors-202109291625409.png)
 
 POST请求（这里请求与响应头部均与非跨域的POST别无二致）
 
-![cors-202109291627460.png](https://www.zzcyes.com/images/cors-202109291627460.png)
+![cors-202109291627460.png](../images/cors-202109291627460.png)
 #### 响应首部字段
 | **字段**                         | **说明**                                                     |
 | -------------------------------- | ------------------------------------------------------------ |

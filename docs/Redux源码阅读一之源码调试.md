@@ -77,11 +77,11 @@ npm run build
 
 build 之后可以看到会打包出不同版本的 Redux 文件。
 
-![redux-debugger-image-20220523144704410](https://www.zzcyes.com/images/redux-debugger-20220523144704410.png)
+![redux-debugger-image-20220523144704410](../images/redux-debugger-20220523144704410.png)
 
 打开  `rollup.config.js` 文件，可以看到不同版本的构建信息
 
-![redux-debugger-image-20220523145036749](https://www.zzcyes.com/images/redux-debugger-20220523145036749.png)
+![redux-debugger-image-20220523145036749](../images/redux-debugger-20220523145036749.png)
 
 - CommonJS
 
@@ -130,25 +130,25 @@ cd redux
 npm link
 ```
 
-![redux-debugger-image-20220524110458367](https://www.zzcyes.com/images/redux-debugger-20220524110458367.png)
+![redux-debugger-image-20220524110458367](../images/redux-debugger-20220524110458367.png)
 
 根据 [npm Docs (Version 6.x)](https://docs.npmjs.com/cli/v6/commands/npm-link/) 文档描述， `npm link` 成功的话，会把库包链接到 `{prefix}/lib/node_modules/<package>`  
 
-![redux-debugger-image-20220524111908683](https://www.zzcyes.com/images/redux-debugger-20220524111908683.png)
+![redux-debugger-image-20220524111908683](../images/redux-debugger-20220524111908683.png)
 
 为了验证 `npm link` 是否成功，我们先通过 `npm config get prefix` 命令查看 `prefix` 值，在这里是`C:\Users\admin\AppData\Roaming\npm` 
 
-![redux-debugger-image-20220524110936982](https://www.zzcyes.com/images/redux-debugger-20220524110936982.png)
+![redux-debugger-image-20220524110936982](../images/redux-debugger-20220524110936982.png)
 
 再进入到 `{prefix}/lib/node_modules/<package>` 目录下看 `redux` 是否被链接到全局。
 
-![redux-debugger-image-20220524112032408](https://www.zzcyes.com/images/redux-debugger-20220524112032408.png)
+![redux-debugger-image-20220524112032408](../images/redux-debugger-20220524112032408.png)
 
 进入到 `{prefix}` 目录后，会发现并没有 `lib` 目录（与官方文档描述不符）。那么直接进入到 `node_modules` 目录，会发现，此时 `redux` 已被链接到全局，并且是以快捷方式创建的文件。
 
 Tips：需要注意的是，这里链接到全局的 redux 模块的命名，并不是根据我们 clone 的项目的文件名来命名的，而是根据 `package.json` 里边的 `name` 字段命名的，也就是包名。
 
-![redux-debugger-image-20220524112142220](https://www.zzcyes.com/images/redux-debugger-20220524112142220.png)
+![redux-debugger-image-20220524112142220](../images/redux-debugger-20220524112142220.png)
 
 ### 引用全局 Redux
 
@@ -159,7 +159,7 @@ Tips：需要注意的是，这里链接到全局的 redux 模块的命名，并
 npm link redux 
 ```
 
-![redux-debugger-image-20220524113638619](https://www.zzcyes.com/images/redux-debugger-20220524113638619.png)
+![redux-debugger-image-20220524113638619](../images/redux-debugger-20220524113638619.png)
 
 link 成功后，会输出当前项目 redux 的引用关系：当前项目引用的 redux 模块 -> 全局 redux模块 -> 克隆下来的 redux 模块
 
@@ -173,7 +173,7 @@ D:\workspace\source-code-debugger\react-redux-debugger\node_modules\redux -> C:\
 
 先 cd 到 redux 根目录下，查看  `package.json` 文件的信息，确定下模块入口。
 
-![redux-debugger-image-20220524145050748](https://www.zzcyes.com/images/redux-debugger-20220524145050748.png)
+![redux-debugger-image-20220524145050748](../images/redux-debugger-20220524145050748.png)
 
 这里 `module` 字段为 `es/redux.js` ，那我们只需要在 `es/redux.js` 文件里打 debugger 断点调试即可。
 
@@ -183,29 +183,29 @@ Tips：为什么入口不是 `main` 字段 ，推荐阅读这篇文章[《packag
 
 为了验证debugger 是否生效，我们在  `es/redux.js` 文件下的 `createStore` 函数内部进行 debugger调试。
 
-![redux-debugger-image-20220524145654269](https://www.zzcyes.com/images/redux-debugger-20220524145654269.png)
+![redux-debugger-image-20220524145654269](../images/redux-debugger-20220524145654269.png)
 
 在 react 项目中通过 createStore 函数创建 store ，然后在组件中使用 store（省略详细代码，重点不是如何使用 redux）
 
-![redux-debugger-image-20220524150948764](https://www.zzcyes.com/images/redux-debugger-20220524150948764.png)
+![redux-debugger-image-20220524150948764](../images/redux-debugger-20220524150948764.png)
 
 通过 `yarn start` 运行项目后，会发现 console 输出了我们在 redux 项目中 debugger 打印的信息。
 
-![redux-debugger-image-20220524151255113](https://www.zzcyes.com/images/redux-debugger-20220524151255113.png)
+![redux-debugger-image-20220524151255113](../images/redux-debugger-20220524151255113.png)
 
 可以看到 Sources 面板中，展示了我们打断点的源码信息，需要注意的是，我们是在 `redux.js` 文件中进行的断点调试，那为什么这里显示的是`createStore.ts` 文件的信息呢? 
 
-![redux-debugger-image-20220524151322772](https://www.zzcyes.com/images/redux-debugger-20220524151322772.png)
+![redux-debugger-image-20220524151322772](../images/redux-debugger-20220524151322772.png)
 
 ### Source Map
 
 还记得之前我们修改过 `rollup.config.js` 文件的配置吗，我们配置了  `sourcemap: true`。在 rollup 打包的时候，会在原有输出目录下多打包出一个  `*.js.map` 的文件
 
-![redux-debugger-image-20220524151953295](https://www.zzcyes.com/images/redux-debugger-20220524151953295.png)
+![redux-debugger-image-20220524151953295](../images/redux-debugger-20220524151953295.png)
 
 在回到 `redux.js` 文件的最后一行，能看到一行注释 `//# sourceMappingURL=redux.js.map*` ，这里标记了该文件的 Source Map 地址为 `redux.js.map` ，如果我们想在浏览器 `source` 面板看到 `redux.js` 的文件信息，那么我们把这行注释去掉即可。
 
-![redux-debugger-image-20220524152831314](https://www.zzcyes.com/images/redux-debugger-20220524152831314.png)
+![redux-debugger-image-20220524152831314](../images/redux-debugger-20220524152831314.png)
 
 ## Redux API
 

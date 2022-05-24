@@ -8,7 +8,7 @@
 
 要在两台电脑上加解密同一个文件，我们至少需要知道加解密方式和密钥，因此，在 HTTPS 发送数据之前，浏览器和服务器之间需要协商加密方式和密钥，过程如下所示：
 
-![img](https://www.zzcyes.com/images/https-encrypt-202109291642594.png)
+![img](../images/https-encrypt-202109291642594.png)
 
 使用对称加密实现 HTTPS
 
@@ -31,7 +31,7 @@
 
 在 HTTPS 中，服务器会将其中的一个密钥通过明文的形式发送给浏览器，我们把这个密钥称为**公钥**，服务器自己留下的那个密钥称为**私钥**。顾名思义，**公钥是每个人都能获取到的，而私钥只有服务器才能知道，不对任何人公开**。下图是使用非对称加密改造的 HTTPS 协议：
 
-![img](https://www.zzcyes.com/images/https-encrypt-202109291642386.png)
+![img](../images/https-encrypt-202109291642386.png)
 
 非对称加密实现 HTTPS
 
@@ -53,7 +53,7 @@
 
 基于以上两点原因，我们最终选择了一个更加完美的方案，那就是**在传输数据阶段依然使用对称加密，但是对称加密的密钥我们采用非对称加密来传输**。下图就是改造后的版本：
 
-![img](https://www.zzcyes.com/images/https-encrypt-202109291642525.png)
+![img](../images/https-encrypt-202109291642525.png)
 
 混合加密实现 HTTPS
 
@@ -87,7 +87,7 @@
 
 接下来我们看看含有数字证书的 HTTPS 的请求流程，你可以参考下图：
 
-![img](https://www.zzcyes.com/images/https-encrypt-202109291642465.png)
+![img](../images/https-encrypt-202109291642465.png)
 
 完整的 HTTPS 请求流程
 

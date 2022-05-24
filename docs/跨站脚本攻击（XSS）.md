@@ -45,7 +45,7 @@
 
 存储型XSS攻击的原因仍然是没有做好数据过滤：前端提交数据至服务器端时，没有做好过滤;服务端在按受到数据时，在存储之前，没有做过滤;前端从服务器端请求到数据，没有过滤输出。
 
-![img](https://www.zzcyes.com/images/xss-202109291629747.png)
+![img](../images/xss-202109291629747.png)
 
 #### 攻击步骤
 
@@ -63,7 +63,7 @@
 
 [完整示例-存储型XSS攻击-github](https://github.com/zzcyes/daily-demo/blob/main/network/safely/xss-storage.html)
 
-![img](https://www.zzcyes.com/images/xss-202109291629917.gif)
+![img](../images/xss-202109291629917.gif)
 
 ### 反射型XSS攻击
 
@@ -74,7 +74,7 @@
 攻击者诱导用户访问一个带有恶意代码的 URL 后，服务器端接收数据后处理，然后把带有恶意代码的数据发送到浏览器端，浏览器端解析这段带有 XSS 代码的数据后当做脚本执行，最终完成 XSS 攻击。
 因为这个过程就像一次反射，故称为反射型 XSS。
 
-![img](https://www.zzcyes.com/images/xss-202109291629447.png)
+![img](../images/xss-202109291629447.png)
 
 #### 攻击步骤
 
@@ -92,7 +92,7 @@
 
 [完整示例-反射性XSS攻击-github](https://github.com/zzcyes/daily-demo/blob/main/network/safely/xss-reflect.html)
 
-![img](https://www.zzcyes.com/images/xss-202109291629681.gif)
+![img](../images/xss-202109291629681.gif)
 
 ### DOM型XSS攻击
 
@@ -106,7 +106,7 @@ DOM型XSS攻击不用将恶意脚本传输到服务器，再返回客户端。�
 
 也就是前端JavaScript代码不够严谨，把不可信的内容插入到了页面，在使用`.innerHTML`、`.outerHTML`、`.appendChild`、`document.write()`等API时要特别小心，不要把不可信的数据作为HTML插入到页面上，尽量使用`.innerText`、`.textContent`、`.setAttribut()`等。
 
-![img](https://www.zzcyes.com/images/xss-202109291629539.png)
+![img](../images/xss-202109291629539.png)
 
 #### 攻击步骤
 
@@ -121,7 +121,7 @@ DOM 型 XSS 跟前两种 XSS 的区别：DOM 型 XSS 攻击中，取出和执行
 
 [完整示例-DOM型XSS攻击-github](https://github.com/zzcyes/daily-demo/blob/main/network/safely/xss-dom.html)
 
-![img](https://www.zzcyes.com/images/xss-202109291629610.gif)
+![img](../images/xss-202109291629610.gif)
 
 ## 防范措施
 

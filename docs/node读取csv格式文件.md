@@ -14,7 +14,7 @@
 
 excel展示
 
-![image.png](https://www.zzcyes.com/images/node-csv-202109291707062.png)
+![image.png](../images/node-csv-202109291707062.png)
 
 ## 读取文本内容
 
@@ -36,7 +36,7 @@ rs.on('data', function(chunk) {
 
 打印文件内容如下：
 
-![image.png](https://www.zzcyes.com/images/node-csv-202109291710033.png)
+![image.png](../images/node-csv-202109291710033.png)
 
 ## 插件
 

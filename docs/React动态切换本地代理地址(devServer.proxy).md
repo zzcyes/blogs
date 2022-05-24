@@ -44,7 +44,7 @@ module.exports = function(proxy, allowedHost) {
 在查阅了webpack官网中[devServer.proxy](https://webpack.js.org/configuration/dev-server/#devserverproxy)的内容后，发现这个`devServer`是用了[http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)包去实现的，并且给出了它的[官方文档](https://github.com/chimurai/http-proxy-middleware#options)
 
 
-![devs-server-proxy-01.png](https://www.zzcyes.com/images/devs-server-proxy-01.png)
+![devs-server-proxy-01.png](../images/devs-server-proxy-01.png)
 
 
 ### http-proxy-middleware
@@ -222,11 +222,11 @@ fetch('/test')
 
 前端请求后，发现报了500 Internal Server Error 的错误
 
-![devs-server-proxy-02.png](https://www.zzcyes.com/images/devs-server-proxy-02.png)
+![devs-server-proxy-02.png](../images/devs-server-proxy-02.png)
 
 为了排除服务端的错误，使用postman对`8001`端口的`/getRouterProxyUrl`和`/test`，还有8002端口的`/test`，均发起请求验证了下，都能正常返回正常的响应数据！
 
-![devs-server-proxy-03.png](https://www.zzcyes.com/images/devs-server-proxy-03.png)
+![devs-server-proxy-03.png](../images/devs-server-proxy-03.png)
 
 这就很纳闷，可能还是在router代理地址这里除了问题，但是通过打`console.log`，发现`getFetch`是能正常返回数据的。再根据错误提示，可以大致判断是在`router`里边调用接口导致出错的。
 
@@ -260,7 +260,7 @@ router: async function(req) {
 
 - [TypeError: Cannot read property 'split' of undefined #1028](https://github.com/http-party/node-http-proxy/issues/1028)
 
-![devs-server-proxy-04.png](https://www.zzcyes.com/images/devs-server-proxy-04.png)
+![devs-server-proxy-04.png](../images/devs-server-proxy-04.png)
 
 有没有可能是router返回的参数不正确，异步函数中不应该是返回string字符串。
 于是代码改为如下，在router函数中调用异步接口，测试后是不报错的。
@@ -293,11 +293,11 @@ router: async function() {
 
 我再去查了下资料[https://github.com/chimurai/http-proxy-middleware/issues/153](https://github.com/chimurai/http-proxy-middleware/issues/153)
 
-![devs-server-proxy-05.png](https://www.zzcyes.com/images/devs-server-proxy-05.png)
+![devs-server-proxy-05.png](../images/devs-server-proxy-05.png)
 
 发现http-proxy-middleware是在0.21.0版本才支持`async router`，那么我们再检查下webpack中webpack-dev-server的版本
 
-![devs-server-proxy-06.png](https://www.zzcyes.com/images/devs-server-proxy-06.png)
+![devs-server-proxy-06.png](../images/devs-server-proxy-06.png)
 
 好家伙，`webpack-dev-server`里边引用的`http-proxy-middleware`中间件是0.19.1版本，我说试了半天咋没有用。那这个`async router`在咱们项目里就不能用了，要用还得升级下中间件的版本。
 
@@ -334,7 +334,7 @@ router: async function() {
 
 在页面里点击调用`fetch("/test")`，发现请求通了，并且是从端口为`8002`的服务器返回的结果！
 
-![devs-server-proxy-07.png](https://www.zzcyes.com/images/devs-server-proxy-07.png)
+![devs-server-proxy-07.png](../images/devs-server-proxy-07.png)
 
 果然可以做`I/O`操作，那如果在不重启项目的情况下，修改`test.env.json`的代理配置，把`port`改为`8001`，再继续调用`fetch("/test")`，请求的结果会变成`8001`端口服务器返回的吗？
 
@@ -348,7 +348,7 @@ router: async function() {
 
 修改完`test.env.json`的配置后，继续调用`fetch("/test")`，发现请求的结果变成了`8001`端口服务器返回的了！
 
-![devs-server-proxy-08.png](https://www.zzcyes.com/images/devs-server-proxy-08.png)
+![devs-server-proxy-08.png](../images/devs-server-proxy-08.png)
 
 到这一步，就验证了咱们最初的想法——“希望能够在修改代理环境后，不用重新跑项目即可”，是可行的！
 
