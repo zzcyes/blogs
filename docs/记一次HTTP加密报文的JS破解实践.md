@@ -2,13 +2,13 @@
 
 最近在玩一款被称为“天”的游戏——塞尔达传说：旷野之息，在网上搜索攻略的时候意外发现了一个网站，该网站包含了游戏里所有的武器装备、材料和道具的数据资料，见下图：
 
-![decipher-https-message-01.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-01.png)
+![decipher-https-message-01.png](https://www.zzcyes.com/images/decipher-https-message-01.png)
 
 看到这么全的数据库，哪个海拉鲁老流氓不心动？
 
 我二话不说打开了开发者工具，正当我准备把网站的请求数据copy下来的时候，下面一幕让海拉鲁老流氓愣了几秒钟：
 
-![decipher-https-message-04.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-04.png)
+![decipher-https-message-04.png](https://www.zzcyes.com/images/decipher-https-message-04.png)
 
 这......数据是看到了，但是`data`和`items`是什么鬼，是个人就看不懂啊，这明显被加密过了。
 
@@ -42,7 +42,7 @@ wSrc2z7sj%2BnlXfsQZXMXyF6oPlYLbVXWO%2BfZXgod4qfQvuHbcMJpjIGPE0H2pdXUTZ4TUcA93Yzi
 
 这个时候我们就可以从`前端JS解密报文`这一步找突破口，此时海拉鲁老流氓嘴角微微上扬，手指熟练的按下了`F12`键，并把光标移动到`sources`面板
 
-![decipher-https-message-05.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-05.png)
+![decipher-https-message-05.png](https://www.zzcyes.com/images/decipher-https-message-05.png)
 
 此时，老流氓表示遭到同行的鄙视
 
@@ -58,11 +58,11 @@ wSrc2z7sj%2BnlXfsQZXMXyF6oPlYLbVXWO%2BfZXgod4qfQvuHbcMJpjIGPE0H2pdXUTZ4TUcA93Yzi
 
 因此，网站的业务逻辑肯定是在`app.567b1880.js`这个文件里边了，我们只需要重点关注这个文件就行了。对其代码格式化后，我们可以看到，以下又是我们不容易理解的一大段代码：
 
-![decipher-https-message-06.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-06.png)
+![decipher-https-message-06.png](https://www.zzcyes.com/images/decipher-https-message-06.png)
 
 这很明显是被开发者混淆了代码，但是，混淆不混淆的没关系，我们只要找到我们关心的代码关键字就行，在js文件里搜索接口路径名的关键字`getByItems`:
 
-![decipher-https-message-07.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-07.png)
+![decipher-https-message-07.png](https://www.zzcyes.com/images/decipher-https-message-07.png)
 
 我们聚焦到`then`里边的函数，当成功返回接口数据后，有以下两个操作：`JSON.parse(a(decodeURIComponent(t.data)))`和`JSON.parse(a(decodeURIComponent(t.items)))`，可以看出，这里对`t.data`和`t.items`都进行了相同的转化。
 
@@ -89,15 +89,15 @@ wSrc2z7sj%2BnlXfsQZXMXyF6oPlYLbVXWO%2BfZXgod4qfQvuHbcMJpjIGPE0H2pdXUTZ4TUcA93Yzi
 
 通过`Overrides`功能，我们能将网站的`app.567b1880.js`文件替换成本地文件并进行调试，在这里，我们把原有的`app.567b1880.js`文件复制一份放到本地，然后在`Overrides`面板出添加本地文件路径，启用`Enable Local Overrides`选项
 
-![decipher-https-message-08.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-08.png)
+![decipher-https-message-08.png](https://www.zzcyes.com/images/decipher-https-message-08.png)
 
 接着，我们在回到刚刚找到的接口路径名的关键字`getByItems`所在行，点击左侧行数添加断点调试
 
-![decipher-https-message-09.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-09.png)
+![decipher-https-message-09.png](https://www.zzcyes.com/images/decipher-https-message-09.png)
 
 此时刷新网页，就能进入到`debugger`的断点调试了。此外，按`F10`或者“下一步”的按钮，可以执行下一步的断点
 
-![decipher-https-message-10.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-10.png)
+![decipher-https-message-10.png](https://www.zzcyes.com/images/decipher-https-message-10.png)
 
 ```js
 t.data = JSON.parse(a(decodeURIComponent(t.data))),
@@ -106,13 +106,13 @@ O.state.items = JSON.parse(a(decodeURIComponent(t.items))),
 
 到这里，其实我们只要关注`t.data`和`O.state.items`的值，就能解出加密报文中`data`和`items`的值了
 
-![decipher-https-message-11.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-11.png)
+![decipher-https-message-11.png](https://www.zzcyes.com/images/decipher-https-message-11.png)
 
 至此，报文就被破解成功了！但是......还记得我们之前说的解密流程么，我们首先得确定加密协议，才可以解密。
 
 刚刚我们也看到了`a`这个被混淆的函数时解密的关键，那么我们现在继续深入它，通过断点调试进入到`a`函数，我们可以看到`a`函数的构造
 
-![decipher-https-message-12.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-12.png)
+![decipher-https-message-12.png](https://www.zzcyes.com/images/decipher-https-message-12.png)
 
 ```js
 function a(e) {
@@ -129,7 +129,7 @@ function a(e) {
 
 再仔细观察，这里的`decrypt`的函数传参中有`mode: Ot.a.mode.ECB,`、`Ot.a.pad.Pkcs7`，再结合`AES加密算法`，又可以确定，这里的加密算法采用的是`ECB`的工作模式，如下图
 
-![decipher-https-message-13.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-13.png)
+![decipher-https-message-13.png](https://www.zzcyes.com/images/decipher-https-message-13.png)
 
 这张图的关键字是`相同的输入产生相同的输出`，可以理解为，如果密钥不变，每次加密相同的报文，那么最后加密得到的密文块是一样的。我们也可以对比下每次的请求返回的加密报文数据，可以发现，其实每次返回的`data`和`items`都是相同的，那么我们就可以确定，在这里的密钥也是固定的，既然密钥是固定的，那么对于前端来说，要想解密报文把数据展示在页面上，这个密钥必然是绕不开前端的。因此，我们可以从前端出发，把密钥找出来。
 
@@ -150,9 +150,9 @@ function a(e) {
 
 我们把函数中的变量都标出来（在这里是`a(t.data)`的执行上下文）
 
-![decipher-https-message-14.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-14.png)
+![decipher-https-message-14.png](https://www.zzcyes.com/images/decipher-https-message-14.png)
 
-![decipher-https-message-15.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-15.png)
+![decipher-https-message-15.png](https://www.zzcyes.com/images/decipher-https-message-15.png)
 
 
 我们先看到`Ot.a`，这是一个加密库包，加上该加密算法为`AES加密算法`，我们很容易联想到前端常用的一个加密库`crypto-js.js`，既然知道了前端加解密用的是`crypto-js.js`，我们接下来只要用这个库包去验证即可。
@@ -175,11 +175,11 @@ function a(e) {
 
 打开浏览器控制台，可以看到这里引入的库包`CryptoJS`构造和`Ot.a`是一样的，那么我们解密的时候就可以根据库包来判断解密函数中的每个变量的含义了。
 
-![decipher-https-message-16.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-16.png)
+![decipher-https-message-16.png](https://www.zzcyes.com/images/decipher-https-message-16.png)
 
 `CryptoJS`文档描述
 
-![decipher-https-message-17.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-17.png)
+![decipher-https-message-17.png](https://www.zzcyes.com/images/decipher-https-message-17.png)
 
 ```js
 // 混淆函数
@@ -217,7 +217,7 @@ var utf8 = CryptoJS.enc.Utf8.stringify(words);
 
 现在我们需要重点关心的是`passphraseText`，根据文档描述可以确定`passphraseText`是密钥了。而`passphraseText`在混淆函数中对应的又是`st`了，我们只需要在`app.567b1880.js`文件中搜索`st`的来源，就能得到密钥了
 
-![decipher-https-message-18.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-18.png)
+![decipher-https-message-18.png](https://www.zzcyes.com/images/decipher-https-message-18.png)
 
 通过查找，我们可以看到`Object(ft["MD5"])("by ilil").toString().substring(0, 16)`的值赋给了`st`
 
@@ -233,7 +233,7 @@ ft = c("3452")
 
 而`c(3452)`又在`chunk-vendors.d9052322.js`文件中，之前也提到过，`chunk-vendors.d9052322.js`是个第三方依赖的库包
 
-![decipher-https-message-19.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-19.png)
+![decipher-https-message-19.png](https://www.zzcyes.com/images/decipher-https-message-19.png)
 
 我们可以看到`3452`标识的匿名函数中的内容是被混淆过的，此时我们继续追溯下去会难查到源头。
 
@@ -260,7 +260,7 @@ function decrypt(encryptText) {
 
 现在`encryptText`和`passphraseText`这两个变量我们都确定了，那么接下来只要解密就行了，把这两个参数带入进函数中，最终就能返回我们想要的解密后的报文了。
 
-![decipher-https-message-20.png](https://gitee.com/zzcyes/repository/raw/master/images/decipher-https-message-20.png)
+![decipher-https-message-20.png](https://www.zzcyes.com/images/decipher-https-message-20.png)
 
 ```json 
 '{"HartCheck":false,"HartCombo":120,"StaminaCheck":false,"StaminaCombo":3000,"RupeeCheck":false,"RupeeBox":999999,"MamoCheck":false,"MamoBox":999999,"KorokCheck":false,"KorokBox":900,"RebornCheck":false,"RebornBox":999,"MotoCheck":false,"MotoDisabled":false,"MasterOpenCheck":false,"MasterOpenDisabled":false,"StockCheck":false,"StockDisabled":false,"RelicCheck":false,"RelicDisabled":false,"BossCheck":false,"BossDisabled":false,"MapCheck":false,"MapDisabled":false,"TransferShowCheck":false,"TransferShowDisabled":false,"TransferCheck":false,"TransferDisabled":false,"Item":{"weapons":[],"bows":[],"arrow":[],"shields":[],"clothes":[],"materials":[],"food":[],"other":[],"horse":[]}}'
