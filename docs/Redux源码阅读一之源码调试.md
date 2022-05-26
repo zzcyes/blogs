@@ -9,13 +9,17 @@
 | yarn | 1.22.17 |
 | redux | 5.0.0-alpha.0 |
 | react | 18.1.0 |
+| node | v14.17.0 |
 | OS | Microsoft Windows [版本 10.0.19044.1645] |
 | Google Chrome | 版本 103.0.5057.3（正式版本）dev （64 位） |
 
+## 初始化环境
 
-## 初始化React项目
+Redux  插件可以与 React 或者其他 view library 一起使用。并且，Redux 提供了 ES、CommonJS 等不同模块规范的依赖包。因此，我们除了在 React 项目实例下调试 Redux，还可以在 Node 环境下调试。
 
-### 创建React项目
+### React
+
+#### 创建项目
 
 通过 `create-react-app` 脚手架创建一个支持 typescript 的 React 项目，`<project name>`为需要填入的项目名称
 
@@ -33,7 +37,7 @@ create-react-app <project name> --template typescript
 
 Tips：如果不加 `--template`，只是 `--typescript` ，项目只是支持 ts ，本身模板不会升级到 ts。 
 
-### run eject scripts
+#### run eject scripts
 
 运行 `eject` scripts命令，可以将 webpack 等配置或依赖项放开（不可逆，若不需要自定义配置则跳过），这里只是为了方便后续自定义配置。
 
@@ -45,7 +49,25 @@ yarn eject
 
 ![redux-debugger-image-20220523143711304](../images/redux-debugger-20220523143711304.png)
 
-### 安装 Redux
+#### 安装 Redux
+
+```
+# Yarn
+yarn add redux
+
+# NPM
+npm install redux
+```
+
+### Node
+
+Node 环境下调试下就比较简洁了，先初始化 npm 
+
+```
+npm init 
+```
+
+再安装 Redux 包
 
 ```
 # Yarn
@@ -152,7 +174,7 @@ Tips：需要注意的是，这里链接到全局的 redux 模块的命名，并
 
 ### 引用全局 Redux
 
-刚刚经过 `npm link` 已经把我们 clone 下来的 redux 模块链接到全局 `node_modules` 。接下来，我们只需要在 react 项目根目录下，通过 `npm link redux` 命令，把我们 react 项目中引用的 `redux` 模块链接到全局 `node_modules` 。
+ 刚刚经过 `npm link` 已经把我们 clone 下来的 redux 模块链接到全局 `node_modules` 。接下来，我们只需要在 react 项目根目录或初始化后的 Node 环境根目录下，通过 `npm link redux` 命令，把我们在调试环境中引用的 `redux` 模块链接到全局 `node_modules` 。
 
 ```
 #cd <React Project Name>
@@ -175,13 +197,21 @@ D:\workspace\source-code-debugger\react-redux-debugger\node_modules\redux -> C:\
 
 ![redux-debugger-image-20220524145050748](../images/redux-debugger-20220524145050748.png)
 
-这里 `module` 字段为 `es/redux.js` ，那我们只需要在 `es/redux.js` 文件里打 debugger 断点调试即可。
+#### React 
+
+在 React 项目下进行调试时，我们找到 `module` 字段为 `es/redux.js` 。然后在  `es/redux.js` 文件里打 debugger 进行断点调试。
 
 Tips：为什么入口不是 `main` 字段 ，推荐阅读这篇文章[《package.json 中 你还不清楚的 browser，module，main 字段优先级 #8》](https://github.com/SunshowerC/blog/issues/8)
 
+#### Node
+
+Node 环境支持 CommonJS 规范， 在 `package.json` 中，`main` 字段为 `lib/redux.js` 。我们在 `lib/redux.js` 文件里打 debugger 进行断点调试。
+
 ### debugger
 
-为了验证debugger 是否生效，我们在  `es/redux.js` 文件下的 `createStore` 函数内部进行 debugger调试。
+#### React
+
+为了验证 redux  link 是否生效，我们在  `es/redux.js` 文件下的 `createStore` 函数内部进行 debugger 调试。
 
 ![redux-debugger-image-20220524145654269](../images/redux-debugger-20220524145654269.png)
 
@@ -196,6 +226,33 @@ Tips：为什么入口不是 `main` 字段 ，推荐阅读这篇文章[《packag
 可以看到 Sources 面板中，展示了我们打断点的源码信息，需要注意的是，我们是在 `redux.js` 文件中进行的断点调试，那为什么这里显示的是`createStore.ts` 文件的信息呢? 
 
 ![redux-debugger-image-20220524151322772](../images/redux-debugger-20220524151322772.png)
+
+#### Node
+
+为了验证 node 环境下 redux  link 是否生效，先进入到 `lib/redux.js` 中添加调试信息
+
+![image-20220526101539133](../images/redux-debugger-20220526101539133.png)
+
+接着在 Node 环境下通过 createStore 函数创建 store 
+
+ ```typescript
+ const { createStore, combineReducers, applyMiddleware, compose } = require('redux');
+ const { counterReducer } = require('./reducer')
+ 
+ const store = createStore(
+     counterReducer,
+ );
+ 
+ console.debug(store.getState());
+ ```
+
+使用 VSCode 编辑器的 Run Debugger 功能进行调试，这里选择 Node.js 环境
+
+![image-20220526101421535](../images/redux-debugger-20220526101421535.png)
+
+Run Debugger 后，会跳转到刚刚在  `lib/redux.js`  打debugger 的位置了，说明之前添加的 redux  link 生效了。那么接下来就可以愉快的调试了！
+
+![image-20220526102150189](../images/redux-debugger-20220526102150189.png)
 
 ### Source Map
 
