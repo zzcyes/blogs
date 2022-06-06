@@ -285,9 +285,10 @@ let isDispatching = false
 function ensureCanMutateNextListeners() {
   if (nextListeners === currentListeners) {
     nextListeners = currentListeners.slice()
-  }
-}
+  } 
 ```
+
+![redux-createstore-1.png]("../images/redux-createstore-1.png")
 
 #### getState
 
