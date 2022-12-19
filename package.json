@@ -21,6 +21,7 @@
     },
     "homepage": "https://github.com/zzcyes/markdown#readme",
     "dependencies": {
+        "@types/node": "^18.11.17",
         "typescript": "^4.4.3"
     }
 }

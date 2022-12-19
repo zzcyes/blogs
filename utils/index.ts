@@ -68,8 +68,10 @@ interface IFDocsItem {
 const genReadmeMd = (docsList:IFDocsItem[])=>{
   let readmeMd = '';
   docsList.forEach((item:IFDocsItem)=> {
+    console.log(item);
     // console.log(item.fullPath.split("markdown"));
-    const [basePath,secondPath] = item.fullPath.split("markdown");
+    const [basePath,secondPath] = item.fullPath.split("blogs");
+    console.log(item.fullPath.split("blogs"));
     console.log('secondPath',secondPath);
       // readmeMd +=`- [《${item.name}》————uptade ${item.createTime}](${item.fullPath})\n\r`
       readmeMd += "- [\u300A" + ToDBC(item.name) + "\u300B" + fillCatalogueName(ToDBC(item.name)) + " uptade " + item.createTime + "](./" + secondPath.slice(1) + ")\n\r";
