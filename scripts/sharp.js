@@ -8,7 +8,11 @@ const config = getConfig();
 function compress(filename) {
   const enrty = path.join(config.entry, filename);
   const output = path.join(config.output, filename);
-  sharp(enrty).jpeg({ quality: 80 }).toFile(output);
+  if (filename.slice(-4) === ".ico") {
+    fs.writeFileSync(output, fs.readFileSync(enrty));
+  } else {
+    sharp(enrty).jpeg({ quality: 80 }).toFile(output);
+  }
 }
 
 async function batchCompress() {

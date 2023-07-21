@@ -32,6 +32,11 @@ async function main() {
     const inputPath = path.join(config.entry, file);
     const outputPath = path.join(config.output, file);
 
+    if (file.slice(-4) === ".ico") {
+      fs.writeFileSync(inputPath, fs.readFileSync(outputPath));
+      continue;
+    }
+
     // 记录压缩前的文件大小和质量
     const originalStats = fs.statSync(inputPath);
     const originalSize = originalStats.size;
