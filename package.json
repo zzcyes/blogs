@@ -1,5 +1,5 @@
 {
-  "name": "markdown",
+  "name": "blogs",
   "version": "1.0.0",
   "description": "markdown仓库",
   "main": "main.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zzcyes/markdown.git"
+    "url": "git+https://github.com/zzcyes/blogs.git"
   },
   "author": "zhongzichen",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/zzcyes/markdown/issues"
+    "url": "https://github.com/zzcyes/blogs/issues"
   },
-  "homepage": "https://github.com/zzcyes/markdown#readme",
+  "homepage": "https://github.com/zzcyes/blogs#readme",
   "dependencies": {
     "@types/node": "^18.11.17",
     "sharp": "^0.32.3",
