@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc main.ts && node main.js",
     "sharp": "node scripts/sharp.js",
-    "sharp:log": "node scripts/sharp.log.js"
+    "sharp:log": "LOGGER=true node scripts/sharp.js"
   },
   "repository": {
     "type": "git",
